@@ -7,6 +7,7 @@ export default function Home() {
   const [loader, setLoad] = useState(false);
   const [pokemons, setPokemons] = useState([]);
   const [offset, setOffset] = useState(0);
+  const [flag, setFlag] = useState(0);
 
   const getPokemonsData = (offset) => {
     setLoad(true);
@@ -41,14 +42,19 @@ export default function Home() {
 
           const emptyObject = {};
           emptyObject.name = response.data?.name;
-          emptyObject.url = "https://pokeapi.co/api/v2/pokemon/"+response.data?.id+"/";
+          emptyObject.url =
+            "https://pokeapi.co/api/v2/pokemon/" + response.data?.id + "/";
           const arrayUsingConstructor = new Array(emptyObject);
           setPokemons(arrayUsingConstructor);
+          setFlag(1);
           setLoad(false);
         } catch (error) {
           console.error("Error fetching Pokémon data:", error);
-          setPokemons([]);
           setLoad(false);
+          if (flag === 0) {
+            setPokemons([]);
+            setFlag(0);
+          }
         }
       };
 
@@ -61,12 +67,10 @@ export default function Home() {
     }
   }, [pokemonName]);
 
-  console.log(pokemons);
-
   return (
     <div className="relative sm:rounded-lg m-5 ml-20 mr-20" id="movetop">
       <div className="flex flex-wrap items-center justify-between py-4 px-4 bg-white dark:bg-gray-800 rounded-tl-lg rounded-tr-lg">
-        <div className="relative p-2 grow">
+        <div className="relative p-2 w-full">
           <div className="absolute inset-y-0 left-0 flex items-center pl-5 pointer-events-none">
             <svg
               className="w-4 h-4 text-gray-500"
@@ -88,24 +92,42 @@ export default function Home() {
             type="text"
             id="table-search-users"
             className="block p-2.5 pl-10 text-sm text-gray-500 border border-gray-300 placeholder-gray-400 rounded-lg w-full bg-gray-50 focus:ring-gray-500 focus:border-gray-500 box-border"
-            placeholder="Search pokemon"
+            placeholder="Search by pokemon name"
             value={pokemonName}
             onChange={(e) => setPokemonName(e.target.value)}
           />
         </div>
-        <div className="relative p-2 grow-0">
+        {/*<div className="relative p-2 w-1/4">
           <select
             id="priority"
             name="priority"
             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            //value={formData.priority}
-            //onChange={onChangeHandler}
+            value={pokemonType}
+            onChange={(e) => setPokemonType(e.target.value)}
           >
-            <option value="All">All</option>
-            <option value="Grass">Grass</option>
-            <option value="Fire">Fire</option>
+            <option value="">All Types</option>
+            <option value="normal">Normal</option>
+            <option value="fighting">Fighting</option>
+            <option value="flying">Flying</option>
+            <option value="poison">Poison</option>
+            <option value="ground">Ground</option>
+            <option value="rock">Rock</option>
+            <option value="bug">Bug</option>
+            <option value="ghost">Ghost</option>
+            <option value="steel">Steel</option>
+            <option value="fire">Fire</option>
+            <option value="water">Water</option>
+            <option value="grass">Grass</option>
+            <option value="electric">Electric</option>
+            <option value="psychic">Psychic</option>
+            <option value="ice">Ice</option>
+            <option value="dragon">Dragon</option>
+            <option value="dark">Dark</option>
+            <option value="fairy">Fairy</option>
+            <option value="unknown">Unknown</option>
+            <option value="shadow">Shadow</option>
           </select>
-        </div>
+        </div>*/}
       </div>
 
       {loader ? (
@@ -136,16 +158,20 @@ export default function Home() {
                 <button
                   type="submit"
                   className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  onClick={() =>
-                    setOffset((prevOffset) => Math.max(0, prevOffset - 8))
-                  }
+                  onClick={() => {
+                    setOffset((prevOffset) => Math.max(0, prevOffset - 8));
+                    setPokemonName("");
+                  }}
                 >
                   Previous
                 </button>
                 <button
                   type="submit"
                   className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  onClick={() => setOffset((prevOffset) => prevOffset + 8)}
+                  onClick={() => {
+                    setOffset((prevOffset) => prevOffset + 8);
+                    setPokemonName("");
+                  }}
                 >
                   Next
                 </button>
