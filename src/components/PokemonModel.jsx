@@ -24,8 +24,6 @@ export default function PokemonModel({ isOpen, closemodal, urlll }) {
 
   useEffect(() => getDetailsFunc(urlll), [urlll]);
 
-  console.log(pokemon);
-
   return (
     <>
       {isOpen ? (

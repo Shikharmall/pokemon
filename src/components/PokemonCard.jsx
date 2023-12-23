@@ -54,25 +54,25 @@ export default function PokemonCard({ url }) {
   return (
     <>
       <div
-        className={`rounded-lg shadow-md p-3 w-full h-full`}
+        className={`rounded-lg shadow-md p-3 w-full h-full `}
         style={{ backgroundColor: randomBgColor }}
         onClick={() => setIsOpen(true)}
       >
         <div className="flex items-center w-full h-full">
           {loader ? (
-            <h1 className="text-white text-md font-semibold bg-gray-300 p-1 m-1 pl-3 pr-3 rounded-full bg-opacity-20 flex justify-center items-center">
+            <h1 className="text-white text-md font-semibold bg-gray-300 p-1 m-1 pl-3 pr-3 rounded-full bg-opacity-20 flex justify-center items-center ">
               loading...
             </h1>
           ) : (
             <>
-              <div className="grow flex flex-col justify-center items-center">
+              <div className="grow flex flex-col  items-center">
                 <h4 className="text-white text-2xl font-semibold">
                   {capitalizeFirstLetter(pokemon.name)}
                 </h4>
                 {pokemon.types?.length > 0
                   ? pokemon.types?.map((item, index) => (
                       <p
-                        className="text-white text-md font-semibold bg-gray-300 p-1 m-1 pl-3 pr-3 rounded-full bg-opacity-20"
+                        className="text-white text-md font-semibold bg-gray-300 p-1 m-1 pl-3 pr-3 rounded-full bg-opacity-40"
                         key={index}
                       >
                         {item.type?.name}

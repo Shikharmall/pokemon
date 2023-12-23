@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getData } from "../api/PokemonAPI";
 import PokemonCard from "../components/PokemonCard";
+import axios from "axios";
 
 export default function Home() {
   const [loader, setLoad] = useState(false);
@@ -27,6 +28,40 @@ export default function Home() {
 
   useEffect(() => getPokemonsData(offset), [offset]);
 
+  const [pokemonName, setPokemonName] = useState("");
+
+  useEffect(() => {
+    if (pokemonName !== "") {
+      const searchPokemon = async () => {
+        setLoad(true);
+        try {
+          const response = await axios.get(
+            `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`
+          );
+
+          const emptyObject = {};
+          emptyObject.name = response.data?.name;
+          emptyObject.url = "https://pokeapi.co/api/v2/pokemon/"+response.data?.id+"/";
+          const arrayUsingConstructor = new Array(emptyObject);
+          setPokemons(arrayUsingConstructor);
+          setLoad(false);
+        } catch (error) {
+          console.error("Error fetching Pokémon data:", error);
+          setPokemons([]);
+          setLoad(false);
+        }
+      };
+
+      // Trigger the search when the component mounts and whenever pokemonName changes
+      if (pokemonName.trim() !== "") {
+        searchPokemon();
+      }
+    } else {
+      getPokemonsData(offset);
+    }
+  }, [pokemonName]);
+
+  console.log(pokemons);
 
   return (
     <div className="relative sm:rounded-lg m-5 ml-20 mr-20" id="movetop">
@@ -54,8 +89,8 @@ export default function Home() {
             id="table-search-users"
             className="block p-2.5 pl-10 text-sm text-gray-500 border border-gray-300 placeholder-gray-400 rounded-lg w-full bg-gray-50 focus:ring-gray-500 focus:border-gray-500 box-border"
             placeholder="Search pokemon"
-            //value={search}
-            //onChange={filterhoadata}
+            value={pokemonName}
+            onChange={(e) => setPokemonName(e.target.value)}
           />
         </div>
         <div className="relative p-2 grow-0">
@@ -76,44 +111,51 @@ export default function Home() {
       {loader ? (
         <div className="w-full h-full">
           <div className="flex justify-center p-30 pb-10 bg-white dark:bg-gray-800">
-            {/*}img src={Loaderimage} alt="loader" className="w-20 h-20" />*/}
             <h1>loading..</h1>
           </div>
         </div>
       ) : (
         <>
-          <div className="page-wrapper">
-            <div className="page-content">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                {pokemons && pokemons.length > 0
-                  ? pokemons.map((item, index) => (
+          {pokemons && pokemons.length > 0 ? (
+            <>
+              <div className="page-wrapper">
+                <div className="page-content">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                    {pokemons.map((item, index) => (
                       <div className="col cursor-pointer" key={index}>
                         <PokemonCard url={item.url} />
                       </div>
-                    ))
-                  : null}
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
 
-          <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600 place-content-between">
-            <button
-              type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              onClick={() =>
-                setOffset((prevOffset) => Math.max(0, prevOffset - 8))
-              }
-            >
-              Previous
-            </button>
-            <button
-              type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              onClick={() => setOffset((prevOffset) => prevOffset + 8)}
-            >
-              Next
-            </button>
-          </div>
+              <br />
+
+              <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600 place-content-between">
+                <button
+                  type="submit"
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  onClick={() =>
+                    setOffset((prevOffset) => Math.max(0, prevOffset - 8))
+                  }
+                >
+                  Previous
+                </button>
+                <button
+                  type="submit"
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  onClick={() => setOffset((prevOffset) => prevOffset + 8)}
+                >
+                  Next
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="flex justify-center p-30 pb-10 bg-white dark:bg-gray-800">
+              <h1>No pokemon found...</h1>
+            </div>
+          )}
         </>
       )}
     </div>
