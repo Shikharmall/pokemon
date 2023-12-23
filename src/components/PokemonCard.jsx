@@ -18,7 +18,7 @@ export default function PokemonCard({ url }) {
   const [isOpen, setIsOpen] = useState(false);
   const [randomBgColor, setRandomBgColor] = useState(getRandomColor());
 
-  const getDetailsFunc = (urll) => {
+  const getDetailsFunc = React.useCallback((urll) => {
     setLoad(true);
     try {
       getPokemonDetails(urll)
@@ -32,7 +32,7 @@ export default function PokemonCard({ url }) {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
   useEffect(
     () => (

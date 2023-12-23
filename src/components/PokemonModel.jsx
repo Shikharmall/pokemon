@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProgressBar from "./ProgressBar";
 import { getPokemonDetails } from "../api/PokemonAPI";
+import debounce from 'lodash/debounce';
 
 export default function PokemonModel({ isOpen, closemodal, urlll }) {
   //const [loader, setLoad] = useState(false);
@@ -22,7 +23,13 @@ export default function PokemonModel({ isOpen, closemodal, urlll }) {
     }
   };
 
-  useEffect(() => getDetailsFunc(urlll), [urlll]);
+  useEffect(() => {
+    const debouncedGetDetailsFunc = debounce(getDetailsFunc, 300); // Adjust the debounce time as needed
+    debouncedGetDetailsFunc(urlll);
+  
+    return () => debouncedGetDetailsFunc.cancel();
+  }, [urlll]);
+  
 
   return (
     <>
