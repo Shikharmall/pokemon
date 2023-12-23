@@ -24,7 +24,7 @@ export default function PokemonModel({ isOpen, closemodal, urlll }) {
 
   useEffect(() => getDetailsFunc(urlll), [urlll]);
 
-  console.log(pokemon.stats);
+  console.log(pokemon);
 
   return (
     <>
@@ -54,16 +54,6 @@ export default function PokemonModel({ isOpen, closemodal, urlll }) {
                         </>
                       ))
                     : null}
-                  {/*<div className="flex justify-center items-center">
-                    <h1 className="p-4 font-bold text-gray-500">hello</h1>
-                    <h1 className="p-4 font-semibold text-gray-700">130</h1>
-                    <ProgressBar percentage={45} color="blue" />
-                  </div>
-                  <div className="flex justify-center items-center">
-                    <h1 className="p-4 font-bold text-gray-500">Wgt. </h1>
-                    <h1 className="p-4 font-semibold text-gray-700">{pokemon.weight}</h1>
-                    <ProgressBar percentage={pokemon.weight} color="blue" />
-                </div>*/}
                 </div>
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button

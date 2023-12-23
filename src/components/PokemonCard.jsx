@@ -69,12 +69,16 @@ export default function PokemonCard({ url }) {
                 <h4 className="text-white text-2xl font-semibold">
                   {capitalizeFirstLetter(pokemon.name)}
                 </h4>
-                <p className="text-white text-md font-semibold bg-gray-300 p-1 m-1 pl-3 pr-3 rounded-full bg-opacity-20">
-                  56
-                </p>
-                <p className="text-white text-md font-semibold bg-gray-300 p-1 m-1 pl-3 pr-3 rounded-full bg-opacity-20">
-                  {pokemon.weight} kg
-                </p>
+                {pokemon.types?.length > 0
+                  ? pokemon.types?.map((item, index) => (
+                      <p
+                        className="text-white text-md font-semibold bg-gray-300 p-1 m-1 pl-3 pr-3 rounded-full bg-opacity-20"
+                        key={index}
+                      >
+                        {item.type?.name}
+                      </p>
+                    ))
+                  : null}
               </div>
 
               <div className="text-green-500 w-30 h-30 flex flex-col justify-center items-center p-3">
