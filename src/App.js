@@ -1,8 +1,18 @@
-import logo from "./logo.svg";
-import "./App.css";
+import React from 'react';
+import { BrowserRouter , Routes ,Route} from 'react-router-dom';
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
 
 function App() {
-  return <h1 className="text-blue-300 p-2">Hello</h1>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" exact element={<Home/>} />
+        <Route path="*" element={<NotFound/>} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
+
