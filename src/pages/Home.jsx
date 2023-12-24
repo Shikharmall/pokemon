@@ -32,14 +32,14 @@ export default function Home() {
   const [pokemonName, setPokemonName] = useState("");
 
   useEffect(() => {
-    if (pokemonName !== "") {
+    if(pokemonName !== "") {
       const searchPokemon = async () => {
         setLoad(true);
         try {
           const response = await axios.get(
             `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`
           );
-
+          console.log(response);
           const emptyObject = {};
           emptyObject.name = response.data?.name;
           emptyObject.url =
@@ -51,7 +51,7 @@ export default function Home() {
         } catch (error) {
           console.error("Error fetching Pokémon data:", error);
           setLoad(false);
-          if (flag === 0) {
+          if(flag === 0) {
             setPokemons([]);
             setFlag(0);
           }
@@ -59,13 +59,15 @@ export default function Home() {
       };
 
       // Trigger the search when the component mounts and whenever pokemonName changes
-      if (pokemonName.trim() !== "") {
+      if(pokemonName.trim() !== "") {
+        setFlag(0);
         searchPokemon();
       }
     } else {
       getPokemonsData(offset);
     }
   }, [pokemonName]);
+  console.log(pokemonName);
 
   return (
     <div className="relative sm:rounded-lg m-5 ml-20 mr-20" id="movetop">
