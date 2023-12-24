@@ -65,7 +65,7 @@ export default function Home() {
     } else {
       getPokemonsData(offset);
     }
-  }, [pokemonName,flag]);
+  }, [pokemonName]);
 
   return (
     <div className="relative sm:rounded-lg m-5 ml-20 mr-20" id="movetop">
