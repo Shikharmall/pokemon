@@ -39,7 +39,6 @@ export default function Home() {
           const response = await axios.get(
             `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`
           );
-          console.log(response);
           const emptyObject = {};
           emptyObject.name = response.data?.name;
           emptyObject.url =
@@ -66,8 +65,7 @@ export default function Home() {
     } else {
       getPokemonsData(offset);
     }
-  }, [pokemonName]);
-  console.log(pokemonName);
+  }, [pokemonName,flag]);
 
   return (
     <div className="relative sm:rounded-lg m-5 ml-20 mr-20" id="movetop">
